@@ -1107,6 +1107,12 @@
                 if (tryPlaceTriggerBtn() || ++_tries > 30) clearInterval(_iv);
             }, 500);
         }
+        // Auto-correção contínua: o tema da Wox (wxp/wxps) carrega a foto tarde e re-renderiza.
+        // Se o selo sumir/ficar 0px/desconectar, recoloca — não depende do timing da 1ª carga.
+        function _ensureSelo() {
+            try { if (!openBtn.isConnected || openBtn.offsetWidth === 0) tryPlaceTriggerBtn(); } catch (e) {}
+        }
+        setInterval(_ensureSelo, 1500);
 
 
         const modal = document.getElementById('q-modal-ia');
