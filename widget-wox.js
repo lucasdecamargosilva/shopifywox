@@ -518,7 +518,7 @@
             font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
             color: var(--c-muted); font-family: var(--font-body);
         }
-        .q-loading-t2 img { height: 16px; width: auto; opacity: 0.7; }
+        .q-loading-t2 img { height: 12px; width: auto; opacity: 0.7; }
         .q-loading-bar { height: 3px; background: var(--c-line); width: 100%; position: relative; overflow: hidden; border-radius: 2px; }
         .q-loading-bar > div {
             position: absolute; top: 0; left: 0; height: 100%; width: 100%;
@@ -694,7 +694,7 @@
             flex-shrink: 0; border-top: 1px solid var(--c-line); text-decoration: none;
         }
         .q-powered-footer span { font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c-muted); }
-        .q-quantic-logo { height: 20px; opacity: 0.7; }
+        .q-quantic-logo { height: 13px; opacity: 0.7; }
     `;
 
 
@@ -715,7 +715,6 @@
                     <!-- Persistent header (all steps) -->
                     <div id="q-header-provador">
                         <h1>Provador Virtual</h1>
-                        <img src="https://usecand.com.br/cdn/shop/files/Sem_nome_1000_x_200_px_1000_x_150_px_1_200x.png?v=1771965555" alt="Use Cand" style="height:42px;width:auto;"/>
                     </div>
 
                     <!-- Main step -->
