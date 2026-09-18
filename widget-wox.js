@@ -876,7 +876,7 @@
     }
 
     function findStoreBuyBtn() {
-        return document.querySelector('.js-addtocart, .btn-add-to-cart, .add-to-cart, button[name="add"], [data-component="product.add-to-cart"], button[type="submit"].js-addtocart, .wox-btn:not(.wox-btn--ghost)');
+        return document.querySelector('.js-addtocart, .btn-add-to-cart, .add-to-cart, button[name="add"], [data-component="product.add-to-cart"], button[type="submit"].js-addtocart, .wox-btn:not(.wox-btn--ghost):not(.q-provador-trigger)');
     }
 
     // Acha o form de produto real (o que tem o input add_to_cart = product_id)
