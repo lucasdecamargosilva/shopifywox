@@ -873,7 +873,7 @@
     }
 
     function findStoreBuyBtn() {
-        return document.querySelector('.js-addtocart, .btn-add-to-cart, .add-to-cart, button[name="add"], [data-component="product.add-to-cart"], button[type="submit"].js-addtocart');
+        return document.querySelector('.js-addtocart, .btn-add-to-cart, .add-to-cart, button[name="add"], [data-component="product.add-to-cart"], button[type="submit"].js-addtocart, .wox-btn:not(.wox-btn--ghost)');
     }
 
     // Acha o form de produto real (o que tem o input add_to_cart = product_id)
@@ -1062,12 +1062,12 @@
         openBtn.style.backgroundRepeat = 'no-repeat';
 
 
-        const imgContainers = ['.product__main-photos', '.product__photos', '.product__photo-container', '.product__photo', '.js-product-slide', '.product-image-column', '.js-swiper-product', '[data-store^="product-image-"]', '.product__media-wrapper', '.product-gallery__media', '.product__media', '.product-image-main', '.product-media-container', '[data-media-id]', '.product__media-item', '.product-gallery', '.product-single__media', '.media-gallery'];
+        const imgContainers = ['.product__main-photos', '.product__photos', '.product__photo-container', '.product__photo', '.js-product-slide', '.product-image-column', '.js-swiper-product', '[data-store^="product-image-"]', '.product__media-wrapper', '.product-gallery__media', '.product__media', '.product-image-main', '.product-media-container', '[data-media-id]', '.product__media-item', '.product-gallery', '.product-single__media', '.media-gallery', '.wxp-main', '.wxps-midia', '.wxps-item', '.wxps-pista'];
 
         function tryPlaceTriggerBtn() {
             // Acha a imagem de PRODUTO (dentro de container de galeria, quadrada, fora de banner/hero).
             const BAD = '[class*="background-media"],[class*="banner"],[class*="hero"],[class*="newsletter"],[class*="slideshow__"],header,footer,[class*="logo"],[class*="rte"]';
-            const GOOD = '.product-image-main, .image-wrap, .product__main-photos, .product__photos, .product__photo, .product__media, .product-single__media, [class*="product"][class*="photo"], [class*="product"][class*="media"], [class*="product"][class*="image"]';
+            const GOOD = '.product-image-main, .image-wrap, .product__main-photos, .product__photos, .product__photo, .product__media, .product-single__media, [class*="product"][class*="photo"], [class*="product"][class*="media"], [class*="product"][class*="image"], .wxp-main, .wxps-midia, .wxps-item, [class^="wxp"], [class^="wxps"]';
             // Containers de slide ativo (carrossel): Flickity/Swiper/genérico. O selo TEM que ir no slide
             // que aparece primeiro, não no maior — senão fica preso num slide oculto e some na 1ª foto.
             const ACTIVE = '.is-selected, .is-active, .swiper-slide-active, [class*="starting-slide"], [class*="active-slide"]';
@@ -1148,7 +1148,7 @@
         });
 
         // Posiciona acima do botão de compra, herdando o MESMO design/tamanho do tema
-        const buyBtn = document.querySelector('.js-addtocart, .btn-add-to-cart, [data-component="product.add-to-cart"], button[name="add"], .product-form__submit');
+        const buyBtn = document.querySelector('.js-addtocart, .btn-add-to-cart, [data-component="product.add-to-cart"], button[name="add"], .product-form__submit, .wox-btn:not(.wox-btn--ghost)');
         if (buyBtn) {
             // Herda as classes do tema (MESMO TAMANHO do botão de compra).
             inlineBtn.className = (buyBtn.className ? buyBtn.className + ' ' : '') + 'q-provador-trigger';
@@ -1271,7 +1271,7 @@
         }
 
         function extractImages() {
-            const containersSelectors = '.product__main-photos, .product__photos, .js-product-slide, .product-image-column, .js-swiper-product, [data-store^="product-image-"], .product__media-wrapper, .product-gallery__media, .product__media, .product-image-main, .product-media-container, [data-media-id], .product__media-item, .product-gallery, .product-single__media, .media-gallery, [data-component="product.gallery"], .swiper-slide:not(.swiper-slide-duplicate), .slider-wrapper';
+            const containersSelectors = '.product__main-photos, .product__photos, .js-product-slide, .product-image-column, .js-swiper-product, [data-store^="product-image-"], .product__media-wrapper, .product-gallery__media, .product__media, .product-image-main, .product-media-container, [data-media-id], .product__media-item, .product-gallery, .product-single__media, .media-gallery, [data-component="product.gallery"], .swiper-slide:not(.swiper-slide-duplicate), .slider-wrapper, .wxp-main, .wxps-midia, .wxps-item, .wxps-pista';
             const possibleContainers = Array.from(document.querySelectorAll(containersSelectors));
             let imgEls = [];
             possibleContainers.forEach(c => {
