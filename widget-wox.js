@@ -429,13 +429,13 @@
         /* ── Terms ── */
         .q-terms-row {
             display: flex; align-items: center; gap: 8px;
-            font-size: 10px !important; color: var(--c-muted); cursor: pointer;
+            font-size: 13px !important; color: var(--c-muted); cursor: pointer;
             line-height: 1.35 !important; margin-bottom: 14px;
             justify-content: center; text-align: center;
         }
-        .q-terms-row span { font-size: 10px !important; line-height: 1.35 !important; }
-        .q-terms-row input { width: 13px; height: 13px; margin-top: 0; cursor: pointer; accent-color: var(--c-ink); flex-shrink: 0; }
-        .q-terms-row a { color: var(--c-ink); text-decoration: underline; text-underline-offset: 2px; font-size: 10px !important; }
+        .q-terms-row span { font-size: 13px !important; line-height: 1.4 !important; }
+        .q-terms-row input { width: 16px; height: 16px; margin-top: 0; cursor: pointer; accent-color: var(--c-ink); flex-shrink: 0; }
+        .q-terms-row a { color: var(--c-ink); text-decoration: underline; text-underline-offset: 2px; font-size: 13px !important; }
 
         /* ── CTA buttons ── */
         .q-btn-black {
