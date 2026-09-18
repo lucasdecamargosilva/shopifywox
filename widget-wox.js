@@ -1062,12 +1062,12 @@
         openBtn.style.backgroundRepeat = 'no-repeat';
 
 
-        const imgContainers = ['.product__main-photos', '.product__photos', '.product__photo-container', '.product__photo', '.js-product-slide', '.product-image-column', '.js-swiper-product', '[data-store^="product-image-"]', '.product__media-wrapper', '.product-gallery__media', '.product__media', '.product-image-main', '.product-media-container', '[data-media-id]', '.product__media-item', '.product-gallery', '.product-single__media', '.media-gallery', '.wxp-main', '.wxps-midia', '.wxps-item', '.wxps-pista'];
+        const imgContainers = ['.product__main-photos', '.product__photos', '.product__photo-container', '.product__photo', '.js-product-slide', '.product-image-column', '.js-swiper-product', '[data-store^="product-image-"]', '.product__media-wrapper', '.product-gallery__media', '.product__media', '.product-image-main', '.product-media-container', '[data-media-id]', '.product__media-item', '.product-gallery', '.product-single__media', '.media-gallery', '.wxp-main', '.wxp-wrap'];
 
         function tryPlaceTriggerBtn() {
             // Acha a imagem de PRODUTO (dentro de container de galeria, quadrada, fora de banner/hero).
             const BAD = '[class*="background-media"],[class*="banner"],[class*="hero"],[class*="newsletter"],[class*="slideshow__"],header,footer,[class*="logo"],[class*="rte"]';
-            const GOOD = '.product-image-main, .image-wrap, .product__main-photos, .product__photos, .product__photo, .product__media, .product-single__media, [class*="product"][class*="photo"], [class*="product"][class*="media"], [class*="product"][class*="image"], .wxp-main, .wxps-midia, .wxps-item, [class^="wxp"], [class^="wxps"]';
+            const GOOD = '.product-image-main, .image-wrap, .product__main-photos, .product__photos, .product__photo, .product__media, .product-single__media, [class*="product"][class*="photo"], [class*="product"][class*="media"], [class*="product"][class*="image"], .wxp-main, .wxp-wrap';
             // Containers de slide ativo (carrossel): Flickity/Swiper/genérico. O selo TEM que ir no slide
             // que aparece primeiro, não no maior — senão fica preso num slide oculto e some na 1ª foto.
             const ACTIVE = '.is-selected, .is-active, .swiper-slide-active, [class*="starting-slide"], [class*="active-slide"]';
@@ -1170,6 +1170,7 @@
             inlineBtn.style.setProperty('justify-content', 'center', 'important');
             inlineBtn.style.setProperty('gap', '8px', 'important');
             inlineBtn.style.marginBottom = '10px';
+            inlineBtn.style.setProperty('cursor', 'pointer', 'important');
             // pseudo-elementos do tema (não dá inline) -> <style> com especificidade dobrada
             if (!document.getElementById('q-provador-btn-style')) {
                 var _st = document.createElement('style');
