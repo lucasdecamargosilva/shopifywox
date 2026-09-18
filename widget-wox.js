@@ -179,7 +179,7 @@
         /* ── Trigger (selo sobre foto) ── */
         @keyframes q-shake { 0%,50%,100%{transform:rotate(0deg)} 10%,30%{transform:rotate(-10deg)} 20%,40%{transform:rotate(10deg)} }
         .q-btn-trigger-ia {
-            position: absolute; top: 14px; right: 14px; z-index: 100;
+            position: absolute; top: 14px; right: 14px; z-index: 5;
             background: none; border: none; padding: 0; cursor: pointer;
             width: 70px; height: 70px;
             display: flex; align-items: center; justify-content: center;
@@ -903,6 +903,8 @@
             var _td = (document.querySelector('h1.product__title,.product-single__title,h1') || {}).innerText || document.title || '';
             fetch('https://n8n.segredosdodrop.com/webhook/pl-provador-buy-click', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: _tp, origin: location.origin, produto: _td }) }).catch(function () {});
         } catch (e) {}
+        // Fecha o provador ao comprar: a loja abre a própria tela (escolher lente) no fluxo dela.
+        try { var _wm = document.getElementById('q-modal-ia'); if (_wm) _wm.style.display = 'none'; document.documentElement.style.overflow = ''; document.body.style.overflow = ''; } catch (e) {}
         var src = getProductForm();
         if (src) {
             var clone = document.createElement('form');
