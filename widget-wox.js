@@ -813,6 +813,7 @@
                                 <div class="q-seal"><i class="ph-fill ph-lock-key"></i><span>Pagamento<br>Seguro</span></div>
                             </div>
                             <button class="q-btn-buy-now" id="q-btn-buy-now" style="display:none;">Comprar Agora</button>
+                            <button class="q-btn-outline" id="q-retry-btn" style="margin-top:10px;">Provar outra foto</button>
                             <div id="q-related-products" style="display:none;">
                                 <h4>Veja tamb&eacute;m</h4>
                                 <div class="q-related-grid" id="q-related-grid"></div>
@@ -1001,13 +1002,12 @@
         var priceEl = document.getElementById('q-result-prodprice');
         if (nameEl) nameEl.textContent = (prodName || '').trim();
         if (priceEl) priceEl.textContent = price || '';
+        // Wox: só nome + valor no resultado — sem parcelamento e sem escassez.
         var instEl = document.getElementById('q-result-installment');
-        if (instEl) { var _inst = getInstallment(); instEl.textContent = _inst; instEl.style.display = _inst ? 'block' : 'none'; }
+        if (instEl) { instEl.textContent = ''; instEl.style.display = 'none'; }
         if (info && ((prodName || '').trim() || price)) info.style.display = 'block';
-        // Escassez
         var sc = document.getElementById('q-scarcity');
-        var scn = document.getElementById('q-scarcity-n');
-        if (sc && scn && (prodName || '').trim()) { scn.textContent = scarcityCount(prodName); sc.style.display = 'flex'; }
+        if (sc) sc.style.display = 'none';
         // Notificações de compra: desativadas em todos os provadores
         btn.style.display = 'flex';
         if (trust) trust.style.display = 'flex';
