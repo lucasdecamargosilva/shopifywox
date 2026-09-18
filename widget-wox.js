@@ -846,6 +846,10 @@
     var Q_CHECKOUT_URL = '/cart';
 
     function getMainPrice() {
+        // Wox (tema custom): o preço REAL do produto está em .wxp-preco (perto do H1).
+        // Os .price-item da Shopify na página são de CARDS relacionados (resource-card) → preço errado.
+        var _wxpP = document.querySelector('.wxp-preco');
+        if (_wxpP) { var _wx = (_wxpP.textContent || '').replace(/\s+/g, ' ').trim(); if (_wx && /\d/.test(_wx)) return _wx; }
         // Wox (tema custom): preço de VENDA é .price-item__group.price (compare-at é price-item--regular).
         var _woxP = document.querySelector('.price-item__group.price:not(.compare-at-price)');
         if (_woxP) { var _wt = (_woxP.textContent || '').replace(/pre[çc]o (promocional|normal)/ig, '').replace(/\s+/g, ' ').trim(); if (_wt && /\d/.test(_wt)) return _wt; }
