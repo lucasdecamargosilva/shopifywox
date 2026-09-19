@@ -1954,6 +1954,15 @@
                         }
                     } catch (_) {}
                     allProdImgs = allProdImgs.slice(0, 4);
+                    // Override de referência fixa: o produto "Wox Duo — Armação Assimétrica em
+                    // Acetato" usa SEMPRE esta foto como referência do óculos (em vez das fotos da
+                    // página). Isolado neste produto; qualquer outro segue o fluxo normal.
+                    try {
+                        var _pnRef = String(prodName || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+                        if (_pnRef.indexOf('wox duo') !== -1 && _pnRef.indexOf('assimetrica') !== -1) {
+                            allProdImgs = ['https://lucasdecamargosilva.github.io/shopifywox/ref-woxduo.jpg'];
+                        }
+                    } catch (_) {}
                     // Guarda anti-"ALTA DEMANDA": só manda blobs que são REALMENTE imagem.
                     // Se uma URL resolver pra HTML/404 (ex: página do produto), o Gemini
                     // rejeita com 400 e a prova quebra. Aqui pulamos o não-imagem; a 1ª
