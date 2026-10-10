@@ -771,7 +771,7 @@
                     <!-- PIX -->
                     <div id="q-step-pix">
                         <h2>Prova Extra</h2>
-                        <p class="q-pix-subtitle">Limite de 3 provas atingido.<br>Pague R$1 via PIX para mais uma:</p>
+                        <p class="q-pix-subtitle">Limite de provas de hoje atingido.<br>Pague R$1 via PIX para mais uma:</p>
                         <p style="font-size: 11px; color: var(--c-muted); margin: 8px 0 0; line-height: 1.5; text-align: center;">&#8505;&#65039; Cobran&#231;a feita pela Provou Levou, n&#227;o pela loja</p>
                         <div class="q-pix-qr"><img id="q-pix-qr-img" alt="QR Code PIX"></div>
                         <div class="q-pix-copiacola">
@@ -2096,7 +2096,7 @@
                     genBtn.disabled = false;
                     try { var _eh=document.querySelector('#q-step-error h2'); var _ep=document.querySelector('#q-step-error p');
                           if(_eh)_eh.textContent='Limite de hoje atingido';
-                          if(_ep)_ep.textContent='Voce ja fez suas 3 provas de hoje. Volte amanha para experimentar mais! 😊'; } catch(_){}
+                          if(_ep)_ep.textContent='Voce ja fez suas provas de hoje. Volte amanha para experimentar mais! 😊'; } catch(_){}
                     showError();
                     return;
                 }
