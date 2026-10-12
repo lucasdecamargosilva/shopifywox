@@ -1967,6 +1967,74 @@
                     // Se uma URL resolver pra HTML/404 (ex: página do produto), o Gemini
                     // rejeita com 400 e a prova quebra. Aqui pulamos o não-imagem; a 1ª
                     // imagem VÁLIDA vira a principal (binary), o resto vai como base64.
+                    // ── Regra de fotos da frota (12/10/2026, Lucas) ─────────────────────────────
+                    // VARIANTE SELECIONADA -> candidatas (foto da variante, grupo vizinho, fotos com rosto)
+                    // -> o gerador filtra por imagem usando a foto da variante (variant_ref_index) como
+                    // referencia de cor e fica com ate 4: rosto da cor certa como principal + packshots.
+                    // Produto sem variante com foto: nao mexe (vale a regra antiga da loja). Versao SHOPIFY.
+                    try {
+                        var _plFV = await (async function () {
+                            // Shopify: variantes e fotos vem de /products/<handle>.js
+                            var chave = function (x) { return String(x || '').split('?')[0].split('/').pop(); };
+                            var abs = function (x) { x = String(x || ''); if (x.indexOf('//') === 0) x = 'https:' + x; return x + (x.indexOf('?') < 0 ? '?' : '&') + 'width=1024'; };
+                            var mh = location.pathname.match(/\/products\/([^\/?#]+)/); if (!mh) return null;
+                            var prod = await fetch('/products/' + mh[1] + '.js').then(function (r) { return r.json(); });
+                            var vs = prod.variants || [];
+                            var imgsVar = {}; vs.forEach(function (v) { if (v.featured_image && v.featured_image.src) imgsVar[chave(v.featured_image.src)] = 1; });
+                            if (Object.keys(imgsVar).length < 2) return null;
+                            var idEl = document.querySelector('form[action*="/cart/add"] [name="id"]');
+                            var vid = String(new URLSearchParams(location.search).get('variant') || (idEl && idEl.value) || '');
+                            var sel = vs.filter(function (v) { return String(v.id) === vid; })[0] || null;
+                            if (!sel || !sel.featured_image) return null;
+                            sel = { image_url: sel.featured_image.src };
+                            var gal = (prod.images || []).slice();
+                            var ini = gal.findIndex(function (g) { return chave(g) === chave(sel.image_url); });
+                            var varUrl = abs(sel.image_url);
+                            var idxVar = []; gal.forEach(function (g, i) { if (imgsVar[chave(g)]) idxVar.push(i); });
+                            // grupo vizinho (lojas que organizam a galeria por cor)
+                            var grupo = [];
+                            if (ini >= 0) { var prox = idxVar.filter(function (i) { return i > ini; })[0]; grupo = gal.slice(ini + 1, prox === undefined ? gal.length : prox); }
+                            // demais fotos da galeria, menos as vinculadas a OUTRAS variantes (com certeza outra cor)
+                            var resto = gal.filter(function (g, i) { return i !== ini && idxVar.indexOf(i) < 0 && grupo.indexOf(g) < 0; });
+                            var cand = grupo.concat(resto).map(abs).slice(0, 10);
+                                                        var rostos = [];
+                            try {
+                                // detector proprio (mesmo do widget: nativo do navegador ou MediaPipe), cache em window
+                                var fdet = window.__plFVDet;
+                                if (fdet === undefined) {
+                                    fdet = null;
+                                    try {
+                                        if ('FaceDetector' in window) fdet = { native: new window.FaceDetector({ fastMode: true, maxDetectedFaces: 1 }) };
+                                        else {
+                                            var vision = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18/vision_bundle.mjs');
+                                            var fileset = await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18/wasm');
+                                            fdet = { mp: await vision.FaceDetector.createFromOptions(fileset, { baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite' }, runningMode: 'IMAGE' }) };
+                                        }
+                                    } catch (e) { fdet = null; }
+                                    window.__plFVDet = fdet;
+                                }
+                                var carrega = function (url) { return new Promise(function (res) { var im = new Image(); im.crossOrigin = 'anonymous'; im.onload = function () { res(im); }; im.onerror = function () { res(null); }; im.src = url; }); };
+                                var temRosto = async function (im) { try { if (fdet.native) { var f = await fdet.native.detect(im); return !!(f && f.length); } if (fdet.mp) { var r = fdet.mp.detect(im); return !!(r && r.detections && r.detections.length); } } catch (e) {} return false; };
+                                if (fdet) for (var ci = 0; ci < cand.length && rostos.length < 3; ci++) {
+                                    var cim = await carrega(cand[ci]);
+                                    if (cim && await temRosto(cim)) rostos.push(cand[ci]);
+                                }
+                            } catch (e) {}
+                            // ordem: rosto (principal) > variante > grupo > outros rostos > resto. O gerador filtra a cor
+                            // pela foto da variante e fica com ate 4.
+                            var fotos = [];
+                            var add = function (u) { if (u && fotos.indexOf(u) < 0) fotos.push(u); };
+                            add(rostos[0]); add(varUrl); grupo.map(abs).forEach(add); rostos.slice(1).forEach(add); resto.map(abs).forEach(add);
+                            fotos = fotos.slice(0, 6);
+                            return { fotos: fotos, variante: varUrl };
+                        })();
+                        if (_plFV && _plFV.fotos && _plFV.fotos.length) {
+                            allProdImgs = _plFV.fotos;
+                            fd.append('variant_ref_index', String(_plFV.fotos.indexOf(_plFV.variante) + 1));
+                            console.log('[PL] fotos da variante:', allProdImgs.length);
+                        }
+                    } catch (_plE) {}
+                    // ─────────────────────────────────────────────────────────────────────────────
                     let _primaryDone = false, _slot = 1;
                     for (let _pi = 0; _pi < allProdImgs.length; _pi++) {
                         try {
