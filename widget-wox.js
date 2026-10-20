@@ -1287,7 +1287,11 @@
 
         function extractImages() {
             const containersSelectors = '.product__main-photos, .product__photos, .js-product-slide, .product-image-column, .js-swiper-product, [data-store^="product-image-"], .product__media-wrapper, .product-gallery__media, .product__media, .product-image-main, .product-media-container, [data-media-id], .product__media-item, .product-gallery, .product-single__media, .media-gallery, [data-component="product.gallery"], .swiper-slide:not(.swiper-slide-duplicate), .slider-wrapper, .wxp-main';
-            const possibleContainers = Array.from(document.querySelectorAll(containersSelectors));
+            // Só a galeria do produto (slide a slide). A busca ampla (coluna inteira, qualquer swiper) é reserva
+            // para tema sem galeria reconhecida — ela pegava banner/produto relacionado (Santi 20/10).
+            const gallerySelectors = '.js-product-slide, .product__media-item, .product-single__media, [data-media-id]';
+            let possibleContainers = Array.from(document.querySelectorAll(gallerySelectors)).filter(c => c.querySelector('img'));
+            if (!possibleContainers.length) possibleContainers = Array.from(document.querySelectorAll(containersSelectors));
             let imgEls = [];
             possibleContainers.forEach(c => {
                 if (!c.closest('#q-modal-ia')) {
