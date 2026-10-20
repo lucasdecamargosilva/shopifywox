@@ -1205,6 +1205,12 @@
         const cameraInput = document.getElementById('q-camera-input');
         const galleryInput= document.getElementById('q-gallery-input');
         const phoneInput  = document.getElementById('q-phone');
+        // ── Lembra o WhatsApp da última prova (localStorage), igual ao resto da frota (20/10/2026) ──
+        try {
+            const _plSaved = localStorage.getItem('pl_last_phone');
+            if (phoneInput && _plSaved && !phoneInput.value) setTimeout(function () { if (!phoneInput.value) { phoneInput.value = _plSaved; phoneInput.dispatchEvent(new Event('input', { bubbles: true })); } }, 0);   // depois dos listeners (máscara)
+        } catch (_) {}
+        if (phoneInput) phoneInput.addEventListener('blur', function () { const d = phoneInput.value.replace(/\D/g, ''); if (d.length >= 8) { try { localStorage.setItem('pl_last_phone', d); } catch (_) {} } });
         const preImg      = document.getElementById('q-pre-img');
         const facePlaceholder = document.getElementById('q-face-placeholder');
 
