@@ -1059,6 +1059,29 @@ setInterval(function(){var el=document.getElementById('q-step-error');if(!el)ret
         if (productNameNormalized.includes('HAT')) {
             return;
         }
+        // --- LENTE NAO PROVA (28/10/2026, Lucas): produto que É a lente (lente de grau, par de lentes,
+        // lente de contato, kit lente...) não mostra o provador. Óculos/armação "com lente X" e clip-on seguem normais.
+        // Olha o nome (h1/og:title) e o slug da URL — tem loja cujo título não diz "lente" mas o slug diz.
+        if ((function plEhPaginaDeLente() {
+            try {
+                var norm = function (s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
+                var og = document.querySelector('meta[property="og:title"]');
+                var slug = '';
+                try { slug = decodeURIComponent(location.pathname.replace(/\/+$/, '').split('/').pop() || ''); } catch (_) {}
+                var lista = [productNameNormalized, og && og.getAttribute('content'), slug];
+                for (var i = 0; i < lista.length; i++) {
+                    var t = norm(lista[i]);
+                    if (!t || /\bclip\b|clipon/.test(t)) continue;
+                    if (/^(lentes?|par de lentes?|kit (de )?lentes?)\b/.test(t) && !/\boculos\b/.test(t)) return true;
+                    if (/\blentes? (de grau|com grau|oftalmicas?|multifoca(l|is)|transitions|antirreflexo|anti reflexo|de contato|de descanso|de leitura|monofoca(l|is)|visao simples)\b|\bkit (de )?lentes?\b|\bpar de lentes?\b/.test(t)
+                        && !/\b(oculos|armacao|solar|sol)\b/.test(t)) return true;
+                }
+            } catch (_) {}
+            return false;
+        })()) {
+            console.log('[PL] Página de lente — provador não aparece aqui.');
+            return;
+        }
 
         // Phosphor Icons — carregado lazily na primeira abertura do modal
         // (não carrega na init para não impactar o tempo de carregamento da página)
@@ -1994,7 +2017,7 @@ setInterval(function(){var el=document.getElementById('q-step-error');if(!el)ret
                     // Acetato" usa SEMPRE esta foto como referência do óculos (em vez das fotos da
                     // página). Isolado neste produto; qualquer outro segue o fluxo normal.
                     try {
-                        var _pnRef = String(prodName || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+                        var _pnRef = String(prodName || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
                         if (_pnRef.indexOf('wox duo') !== -1 && _pnRef.indexOf('assimetrica') !== -1) {
                             allProdImgs = ['https://lucasdecamargosilva.github.io/shopifywox/ref-woxduo.jpg'];
                         }
